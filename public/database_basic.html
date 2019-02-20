@@ -93,31 +93,51 @@
 
   <script type="text/javascript">
 
-  var config = {
-  apiKey: "AIzaSyCVB5Yq8P6-yA5GYhqtyxU9Wrv72FdaqAs",
-  authDomain: "test-5a813.firebaseapp.com",
-  databaseURL: "https://test-5a813.firebaseio.com/",
-  projectId: "test-5a813",
-  // storageBucket: "<BUCKET>.appspot.com",
-  messagingSenderId: "442582757285",
-  };
-  firebase.initializeApp(config);
+  $(function(){
+    var config = {
+    apiKey: "AIzaSyCVB5Yq8P6-yA5GYhqtyxU9Wrv72FdaqAs",
+    authDomain: "test-5a813.firebaseapp.com",
+    databaseURL: "https://test-5a813.firebaseio.com/",
+    projectId: "test-5a813",
+    // storageBucket: "<BUCKET>.appspot.com",
+    messagingSenderId: "442582757285",
+    };
+    firebase.initializeApp(config);
 
-  /* TODO 2. 버튼을 눌렀을 경우 구글 인증 동작하게 */
-  $('#BTN_GOOGLE_LOGIN').on('click',function(){
+    /* TODO 2. 버튼을 눌렀을 경우 구글 인증 동작하게 */
+    $('#BTN_GOOGLE_LOGIN').on('click',function(){
 
-    var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function(result){
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(function(result){
+
+      });
 
     });
 
+
+    /* TODO 3. 데이터 베이스 '/메세지' 쓰기 */
+    // firebase.database().ref('/Hi').set('안녕하세요');
+    /* TODO 4. DB에서 '/메세지'값 읽어오기 */
+    firebase.database().ref('/msg').once('value',function(snapshot){
+      var message = snapshot.val();
+      $("#DB_MESSAGE").text(message);
+    });
+
+    /* TODO 5. DB 메세지 값 변경 */
+    $("#BTN_UPDATE").on('click',function(){
+      var new_msg = $("#INPUT_MESSAGE").val();
+      firebase.database().ref('/msg').set(new_msg);
+
+
+      firebase.database().ref('/msg').once('value',function(snapshot){
+        var message = snapshot.val();
+        $("#DB_MESSAGE").text(message);
+      });
+    });
+
+
+
   });
-
-
-  /* TODO 3. 데이터 베이스 '/메세지' 쓰기 */
-  // firebase.database().ref('/Hi').set('안녕하세요');
-  /* TODO 4. DB에서 '/메세지'값 읽어오기 */
-  /* TODO 5. DB 메세지 값 변경 */
 
   </script>
 
